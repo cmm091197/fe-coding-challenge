@@ -1,0 +1,85 @@
+<div class="card">
+  <div class="card-content">
+    <div class="card-header">
+      <img [src]="comment.user.image.png" [alt]="comment.user.username" />
+      <p>{{ comment.user.username }}</p>
+      @if (user.username === comment.user.username) {
+        <p class="you">YOU</p>
+      }
+      <p class="text-gray">{{ comment.createdAt | dateAgo }}</p>
+    </div>
+
+    @if (!isEditMode) {
+      <p>
+        @if (replyingTo) {
+          <span class="text-blue"> @{{ replyingTo }}</span>
+        }
+        {{ comment.content }}
+      </p>
+    } @else {
+      <div class="edit-form">
+        <mat-form-field appearance="outline" class="comment-content">
+          <mat-label>Add a comment.</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            [placeholder]="'Replying to @' + replyingTo"
+            [(ngModel)]="content"
+          ></textarea>
+        </mat-form-field>
+
+        <button
+          (click)="onUpdate()"
+          [disabled]="!content"
+          class="border"
+          matButton="filled"
+        >
+          Update
+        </button>
+      </div>
+    }
+
+    <div class="action-btn">
+      @if (user.username !== comment.user.username) {
+        <button (click)="showReplyForm = !showReplyForm" matButton>
+          <mat-icon>reply</mat-icon>Reply
+        </button>
+      } @else {
+        @if (isEditMode) {
+          <button class="warn" (click)="openDeleteCommentDialog()" matButton>
+            <mat-icon>delete</mat-icon>Delete
+          </button>
+          <button (click)="cancelEdit()" matButton>
+            <mat-icon>cancel</mat-icon>Cancel
+          </button>
+        } @else {
+          <button (click)="isEditMode = !isEditMode" matButton>
+            <mat-icon>edit</mat-icon>Edit
+          </button>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="vote-btn">
+    <button (click)="onVote('increase')" [disabled]="isEditMode" matIconButton>
+      <mat-icon>add</mat-icon>
+    </button>
+    <p>{{ comment.score }}</p>
+    <button
+      (click)="onVote('decrease')"
+      [disabled]="comment.score <= 0 || isEditMode"
+      matIconButton
+    >
+      <mat-icon>remove</mat-icon>
+    </button>
+  </div>
+</div>
+
+@if (showReplyForm) {
+  <app-form
+    (addComment)="onAddReply($event)"
+    [comment]="comment"
+    [user]="user"
+  ></app-form>
+}

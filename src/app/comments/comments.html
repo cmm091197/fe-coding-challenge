@@ -1,0 +1,28 @@
+<div class="container">
+  @for (comment of sortComments(); track comment.id) {
+    <app-card
+      [comment]="comment"
+      [user]="currentUser"
+      (updateComment)="onUpdateComment($event)"
+      (deleteComment)="deleteComment($event)"
+      (addReply)="onAddReply($event, comment.id)"
+      ngSkipHydration
+    />
+
+    <div class="replies">
+      @for (reply of sortReplies(comment); track reply.id) {
+        <app-card
+          [comment]="reply"
+          [user]="currentUser"
+          [replyingTo]="reply.replyingTo"
+          (updateReply)="onUpdateReply($event, comment.id)"
+          (deleteReply)="onDeleteReply($event, comment.id)"
+          (addReply)="onAddReply($event, comment.id)"
+          ngSkipHydration
+        />
+      }
+    </div>
+  }
+
+  <app-form (addComment)="addComment($event)" [user]="currentUser"></app-form>
+</div>

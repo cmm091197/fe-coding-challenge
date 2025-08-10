@@ -1,0 +1,38 @@
+.card {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  background-color: var(--color-white);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  img {
+    max-width: 2.5rem;
+  }
+
+  .field {
+    width: 100%;
+  }
+}
+
+.border {
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 44rem) {
+  .card {
+    .img {
+      order: 0;
+    }
+
+    .field {
+      order: 1;
+      width: 70%;
+    }
+
+    .send-btn {
+      order: 2;
+    }
+  }
+}

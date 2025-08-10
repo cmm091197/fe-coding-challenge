@@ -1,0 +1,26 @@
+<div class="card">
+  <mat-form-field appearance="outline" class="field">
+    <mat-label>Add a comment.</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="content"
+      rows="4"
+      [placeholder]="
+        comment ? 'replying to @' + comment.user.username : 'Add a comment...'
+      "
+    ></textarea>
+  </mat-form-field>
+
+  <div class="img">
+    <img [src]="user.image.png" [alt]="user.username" />
+  </div>
+
+  <button
+    (click)="onAddComment()"
+    [disabled]="!content"
+    class="border send-btn"
+    matButton="filled"
+  >
+    {{ comment ? "Reply" : "Send" }}
+  </button>
+</div>
